@@ -1,0 +1,46 @@
+#gameWindow {
+
+  display: inline-block;
+  background-color: black;
+  height: 50%;
+  width: 45%;
+  text-align: center;
+  overflow: hidden;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+
+}
+
+#optionsWindow {
+  display: inline-block;
+  background-color: grey;
+  height: 70%;
+  width: 20%;
+  text-align: center;
+  overflow: hidden;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 15%;
+  -ms-transform: translate(-50%, -15%);
+  transform: translate(-50%, -50%);
+}
+
+#scoreWindow {
+  display: inline-block;
+  background-color: grey;
+  height: 70%;
+  width: 20%;
+  text-align: center;
+  overflow: hidden;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 85%;
+  -ms-transform: translate(-50%, -15%);
+  transform: translate(-50%, -50%);
+}
