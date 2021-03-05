@@ -6,8 +6,7 @@ let nameInput = () => document.getElementById("name")
 let scoreInput = () => document.getElementById("score")
 
 window.addEventListener('DOMContentLoaded', (event) => {
-  // getUsers();
-  getScores();
+  fetchScores();
   renderForm();
   addButtonFunctionality();
 });
@@ -22,13 +21,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
 //     });
 // }
 
-function getScores(){
+function fetchScores(){
+  Game.all = []
+  clearScores()
   fetch(baseUrl + "/games").then(response => response.json())
     .then(data => {
       data.forEach(score => {
         let game = new Game(score)
-        putScoresOnDom(game)
       });
+      renderScores()
     });
 }
 
@@ -73,11 +74,13 @@ function submitScore(e){
     body: JSON.stringify(params),
     method: "POST"})
     .then(resp => resp.json())
-    .then(score => console.log(score))
-
-    clearScores();
-    getScores();
+    .then(score => { 
+       
+      fetchScores();
+    })
+  
 }
+
 
 // function putUserOnDom(user){
 //   let div = document.createElement("div")
@@ -95,6 +98,10 @@ function submitScore(e){
 
 function clearScores(){
   scoreBoard.innerHTML = ""
+}
+
+function renderScores(){
+  Game.all.forEach(game => putScoresOnDom(game))
 }
 
 function putScoresOnDom(score){
@@ -117,14 +124,25 @@ function putScoresOnDom(score){
 }
 
 function deleteScore(e){
-  console.log(e.target.id)
-  id = e.target.id
+  
+  id = parseInt(e.target.id)
+  
   fetch(baseUrl + "/games/" + id, {
     method: "DELETE"
   })
   .then(resp => resp.json())
-  
-  
+  .then(function(data){
+    Game.all = Game.all.filter(function(game){
+      return game.id !== data.id
+    })
+    updateScores()
+  })
+  }
+
+
+function updateScores(){
+  clearScores()
+  renderScores()
 }
 
 

@@ -17,7 +17,7 @@
 
 #optionsWindow {
   display: inline-block;
-  background-color: grey;
+  background-color: rgb(202, 200, 200);
   height: 70%;
   width: 20%;
   text-align: center;
@@ -32,7 +32,7 @@
 
 #scoreWindow {
   display: inline-block;
-  background-color: grey;
+  background-color: rgb(202, 200, 200);
   height: 70%;
   width: 20%;
   text-align: center;
