@@ -12,15 +12,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
-// function getUsers(){
-//   fetch(baseUrl + "/users").then(response => response.json())
-//     .then(data => {
-//       data.forEach(user => {
-//         putUserOnDom(user)
-//       });
-//     });
-// }
-
 function fetchScores(){
   Game.all = []
   clearScores()
@@ -81,21 +72,6 @@ function submitScore(e){
   
 }
 
-
-// function putUserOnDom(user){
-//   let div = document.createElement("div")
-//   let li = document.createElement("li")
-//   let p = document.createElement("p")
-//   let p2 = document.createElement("p")
-
-//   p.innerText = user.name
-//   // p2.innerText = user.id
-
-//   li.append(p, p2)
-//   div.append(li)
-//   optionsArea.append(div)
-// }
-
 function clearScores(){
   scoreBoard.innerHTML = ""
 }
@@ -146,7 +122,6 @@ function updateScores(){
 }
 
 
-
 class Game {
 
   constructor(score){
@@ -159,3 +134,5 @@ class Game {
   static all = []
 
 }
+
+// game mechanics
