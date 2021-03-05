@@ -1,8 +1,11 @@
 const baseUrl = "http://localhost:3000"
 const optionsDiv = document.getElementById("optionsWindow")
 const optionsArea = document.getElementById("optionsUl")
+const scoreBoard = document.getElementById("scoreBoard")
+
 window.addEventListener('DOMContentLoaded', (event) => {
   getUsers();
+  getScores();
 });
 
 
@@ -15,6 +18,15 @@ function getUsers(){
     });
 }
 
+function getScores(){
+  fetch(baseUrl + "/games").then(response => response.json())
+    .then(data => {
+      data.forEach(score => {
+        putScoresOnDom(score)
+      });
+    });
+}
+
 function putUserOnDom(user){
   let div = document.createElement("div")
   let li = document.createElement("li")
@@ -22,11 +34,26 @@ function putUserOnDom(user){
   let p2 = document.createElement("p")
 
   p.innerText = user.name
-  p2.innerText = user.id
+  // p2.innerText = user.id
 
   li.append(p, p2)
   div.append(li)
   optionsArea.append(div)
+}
+
+function putScoresOnDom(score){
+  let div = document.createElement("div")
+  let li = document.createElement("li")
+  let p = document.createElement("p")
+  let p2 = document.createElement("p")
+
+  p.innerText = score.user.name
+  p2.innerText = score.score
+
+  li.append(p, p2)
+  div.append(li)
+  scoreBoard.append(div)
+
 }
 
 
