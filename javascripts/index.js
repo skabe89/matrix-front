@@ -13,20 +13,21 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
-function getUsers(){
-  fetch(baseUrl + "/users").then(response => response.json())
-    .then(data => {
-      data.forEach(user => {
-        putUserOnDom(user)
-      });
-    });
-}
+// function getUsers(){
+//   fetch(baseUrl + "/users").then(response => response.json())
+//     .then(data => {
+//       data.forEach(user => {
+//         putUserOnDom(user)
+//       });
+//     });
+// }
 
 function getScores(){
   fetch(baseUrl + "/games").then(response => response.json())
     .then(data => {
       data.forEach(score => {
-        putScoresOnDom(score)
+        let game = new Game(score)
+        putScoresOnDom(game)
       });
     });
 }
@@ -73,6 +74,9 @@ function submitScore(e){
     method: "POST"})
     .then(resp => resp.json())
     .then(score => console.log(score))
+
+    clearScores();
+    getScores();
 }
 
 // function putUserOnDom(user){
@@ -89,31 +93,51 @@ function submitScore(e){
 //   optionsArea.append(div)
 // }
 
+function clearScores(){
+  scoreBoard.innerHTML = ""
+}
+
 function putScoresOnDom(score){
   let div = document.createElement("div")
   let li = document.createElement("li")
   let p = document.createElement("p")
   let p2 = document.createElement("p")
+  let btn = document.createElement("button")
 
   p.innerText = score.user.name
   p2.innerText = score.score
+  btn.innerText = "Delete-Score"
+  btn.id = score.id
+  btn.addEventListener("click", deleteScore)
 
-  li.append(p, p2)
+  li.append(p, p2, btn)
   div.append(li)
   scoreBoard.append(div)
 
 }
 
+function deleteScore(e){
+  console.log(e.target.id)
+  id = e.target.id
+  fetch(baseUrl + "/games/" + id, {
+    method: "DELETE"
+  })
+  .then(resp => resp.json())
+  
+  
+}
 
-// class User {
 
-//   constructor(name){
-//     this.name = name
-//     User.all.push(this)
-//   }
 
-//   static all() {
-//     return []
-//   }
+class Game {
 
-// }
+  constructor(score){
+    this.id = score.id
+    this.score = score.score
+    this.user = score.user
+    Game.all.push(this)
+  }
+
+  static all = []
+
+}
