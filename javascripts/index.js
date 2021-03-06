@@ -177,7 +177,27 @@ function bulletMove(){
   }
 }
 
-let shot = function(){
+function lowBulletMove(){
+  let shotMove = bullet.style.left.replace("px", "")
+  let left = parseInt(shotMove, 10)
+  let shotDown = bullet.style.bottom.replace("px", "")
+  let bottom = parseInt(shotDown, 10)
+
+  if (left > 0) {
+    bullet.style.left = `${left - 5}px`
+    if(left % 15 === 0){
+      bullet.style.bottom = `${bottom - 1}px`
+    }
+  }
+  else {
+    clearInterval(intervalId)
+    bullet.style.left = "685px"
+    bullet.style.bottom = "55px"
+    // score ++
+  }
+}
+
+let highShot = function(){
   this.intervalId = setInterval(function() {
     bulletMove()
    //check hit
@@ -185,11 +205,26 @@ let shot = function(){
     , 7);
 }
 
+let lowShot = function(){
+  this.id = setInterval(function() {
+    lowBulletMove()
+  })
+}
+
+
+//jump hits 140, 135, 130, 125, 120, 115
+
 document.addEventListener("keydown", function(e) {
   if(e.key === "ArrowUp"){
     jump()
   }
   if(e.key === "ArrowDown"){
     duck()
+  }
+  if(e.key === "ArrowLeft"){
+    bulletMove()
+  }
+  if(e.key === "ArrowRight"){
+    lowBulletMove()
   }
 })
