@@ -160,7 +160,29 @@ function duck(){
     player.style.width = "20px"
     player.style.left = "120px"
   }
-  , 400)
+  , 300)
+}
+
+function bulletMove(){
+  let shotMove = bullet.style.left.replace("px", "")
+  let left = parseInt(shotMove, 10)
+
+  if (left > 0) {
+    bullet.style.left = `${left - 5}px`
+  }
+  else {
+    clearInterval(intervalId)
+    bullet.style.left = "685px"
+    // score ++
+  }
+}
+
+let shot = function(){
+  this.intervalId = setInterval(function() {
+    bulletMove()
+   //check hit
+  }
+    , 7);
 }
 
 document.addEventListener("keydown", function(e) {
