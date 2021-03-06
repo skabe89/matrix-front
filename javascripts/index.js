@@ -27,11 +27,10 @@ function fetchScores(){
 
 function renderForm(){
   
-  let form = `<h3>Enter Your Initials</h3>
+  let form = `<h3>Enter Your Name</h3>
   <form id="form">
     <div class="input-field">
       <input type="text" name="name" id="name"/>
-      <input type="text" name="score" id="score"/>
     </div>
     <br>
     <input type="submit" value="Submit" />
@@ -50,9 +49,12 @@ function addButtonFunctionality(){
 }
 
 function submitScore(e){
-  
+  if(score === -1){
+    score = 0
+  }
+
   let params = {
-    "score": scoreInput().value,
+    "score": score,
         "user": {
           "name": nameInput().value
         }
@@ -143,6 +145,8 @@ player.style.height = "80px"
 const bullet = document.getElementById("bullet")
 const scoreDiv = document.getElementById("score")
 let score = 0
+renderGameScore()
+let bulletSpeeds = [2, 3, 4, 5, 6, 7, 8]
 
 function renderGameScore(){
   scoreDiv.innerText = score
@@ -209,15 +213,17 @@ let checkHit = function(){
   console.log(height)
   if (bullet.style.bottom === "58px"){
     console.log(bulletLeft)
-    if(height === "80px" && bulletLeft === "140px"){
+    if(height === "80px" && bulletLeft === "140px", height === "80px" && bulletLeft === "135px", height === "80px" && bulletLeft === "130px"){
       alert("Game Over, high hit")
+      submitScore()
       score = -1
     }
   }
   else if(bullet.style.bottom !== "58px"){
     //lowshot
-    if(bottom === "0px" && bulletLeft === "140px"){
+    if(bottom === "0px" && bulletLeft === "140px", bottom === "0px" && bulletLeft === "135px", bottom === "0px" && bulletLeft === "130px"){
       alert("Game Over, low hit")
+      submitScore()
       score = -1
     } 
   }
@@ -227,14 +233,15 @@ let checkHit = function(){
 let shot = function(){
   let randomNum = Math.floor(Math.random() * 2)
   let shotOptions = [lowBulletMove, highBulletMove]
+  let randomShot = Math.floor(Math.random() * 7)
   console.log(randomNum)
   this.intervalId = setInterval(function() {
     shotOptions[randomNum]()
     checkHit()
    //check hit
   }
-    , 7);
-    //number will be variable to change the speeds 
+    , bulletSpeeds[randomShot]);
+    //variable to change the speeds 
 }
 
 
@@ -245,7 +252,7 @@ document.addEventListener("keydown", function(e) {
   if(e.key === "ArrowDown"){
     duck()
   }
-  if(e.key === "ArrowLeft"){
+  if(e.keyCode === 32){
     shot()
   }
   if(e.key === "ArrowRight"){
