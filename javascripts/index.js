@@ -139,6 +139,7 @@ class Game {
 // game mechanics
 
 const player = document.getElementById("player")
+player.style.height = "80px"
 const bullet = document.getElementById("bullet")
 
 // function renderPlayer(){
@@ -163,7 +164,7 @@ function duck(){
   , 300)
 }
 
-function bulletMove(){
+let highBulletMove = function(){
   let shotMove = bullet.style.left.replace("px", "")
   let left = parseInt(shotMove, 10)
 
@@ -177,7 +178,7 @@ function bulletMove(){
   }
 }
 
-function lowBulletMove(){
+let lowBulletMove = function(){
   let shotMove = bullet.style.left.replace("px", "")
   let left = parseInt(shotMove, 10)
   let shotDown = bullet.style.bottom.replace("px", "")
@@ -192,27 +193,45 @@ function lowBulletMove(){
   else {
     clearInterval(intervalId)
     bullet.style.left = "685px"
-    bullet.style.bottom = "55px"
+    bullet.style.bottom = "58px"
     // score ++
   }
 }
 
-let highShot = function(){
+let checkHit = function(){
+  let bulletLeft = bullet.style.left
+  let bottom = player.style.bottom
+  let height = player.style.height
+  console.log(height)
+  if (bullet.style.bottom === "58px"){
+    console.log(bulletLeft)
+    if(height === "80px" && bulletLeft === "140px"){
+      alert("Game Over, high hit")
+    }
+  }
+  else if(bullet.style.bottom !== "58px"){
+    //lowshot
+    if(bottom === "0px" && bulletLeft === "140px"){
+      alert("Game Over, low hit")
+    } 
+  }
+}
+//left hits 140, 135, 130, 125, 120, 115
+
+let shot = function(){
+  let randomNum = Math.floor(Math.random() * 2)
+  let shotOptions = [lowBulletMove, highBulletMove]
+  console.log(randomNum)
   this.intervalId = setInterval(function() {
-    bulletMove()
+    shotOptions[randomNum]()
+    checkHit()
    //check hit
   }
     , 7);
-}
-
-let lowShot = function(){
-  this.id = setInterval(function() {
-    lowBulletMove()
-  })
+    //number will be variable to change the speeds 
 }
 
 
-//jump hits 140, 135, 130, 125, 120, 115
 
 document.addEventListener("keydown", function(e) {
   if(e.key === "ArrowUp"){
@@ -222,7 +241,7 @@ document.addEventListener("keydown", function(e) {
     duck()
   }
   if(e.key === "ArrowLeft"){
-    bulletMove()
+    shot()
   }
   if(e.key === "ArrowRight"){
     lowBulletMove()
