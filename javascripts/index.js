@@ -146,6 +146,7 @@ const bullet = document.getElementById("bullet")
 const scoreDiv = document.getElementById("score")
 
 let score = 0
+let theOneUsed = false
 renderGameScore()
 let bulletSpeeds = [2, 3, 4, 5, 6, 7, 8]
 
@@ -195,6 +196,7 @@ let highBulletMove = function(){
     clearInterval(intervalId)
     bullet.style.left = "685px"
     score ++
+    checkScore()
     renderGameScore()
   }
 }
@@ -216,7 +218,16 @@ let lowBulletMove = function(){
     bullet.style.left = "685px"
     bullet.style.bottom = "58px"
     score ++
+    checkScore()
     renderGameScore()
+  }
+}
+
+function checkScore(){
+  if(score > Game.all[0].score && theOneUsed === false){
+    gifOn();
+    setTimeout(() => gifOff(), 2000)
+    theOneUsed = true
   }
 }
 
@@ -229,6 +240,7 @@ let checkHit = function(){
     console.log(bulletLeft)
     if(height === "80px" && bulletLeft === "140px", height === "80px" && bulletLeft === "135px", height === "80px" && bulletLeft === "130px"){
       alert("Game Over, high hit")
+      theOneUsed = false
       submitScore()
       score = -1
     }
@@ -237,6 +249,7 @@ let checkHit = function(){
     //lowshot
     if(bottom === "0px" && bulletLeft === "140px", bottom === "0px" && bulletLeft === "135px", bottom === "0px" && bulletLeft === "130px"){
       alert("Game Over, low hit")
+      theOneUsed = false
       submitScore()
       score = -1
     } 
@@ -252,10 +265,21 @@ let shot = function(){
   this.intervalId = setInterval(function() {
     shotOptions[randomNum]()
     checkHit()
-   //check hit
+    //check hit
   }
-    , bulletSpeeds[randomShot]);
-    //variable to change the speeds 
+  , bulletSpeeds[randomShot]);
+  //variable to change the speeds 
+}
+
+
+function startGame(){
+  startWindow().style.display = "none";
+  addGameEvents()
+}
+
+
+function gameOver(){
+  startWindow().style.display = "block"
 }
 
 
@@ -280,18 +304,11 @@ function addGameEvents(){
 let theOneGif = document.getElementById("theOne")
 
 function gifOn(){
+  startWindow().style.display = "block"
   theOneGif.style.display = "block"
 }
 
 function gifOff(){
+  startWindow().style.display = "none"
   theOneGif.style.display = "none";
-}
-
-function startGame(){
-  startWindow().style.display = "none";
-  addGameEvents()
-}
-
-function gameOver(){
-  startWindow().style.display = "block"
 }
