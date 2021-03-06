@@ -76,3 +76,10 @@
   position: absolute;
   background-color: rgb(248, 248, 255);
 }
+
+#bullet {
+  height: 5px;
+  width: 7px;
+  position: absolute;
+  background-color: rgb(137, 137, 202);
+}

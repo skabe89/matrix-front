@@ -139,6 +139,7 @@ class Game {
 // game mechanics
 
 const player = document.getElementById("player")
+const bullet = document.getElementById("bullet")
 
 // function renderPlayer(){
 //   let player = ` <div id="player" style="bottom: 0px; left: 120px;"></div>`
@@ -151,13 +152,13 @@ function jump(){
 }
 
 function duck(){
-  player.style.left = "160px"
+  player.style.left = "40px"
   player.style.height = "20px"
-  player.style.width = "40px"
+  player.style.width = "80px"
   setTimeout(() => {
-    player.style.height = "40px"
+    player.style.height = "80px"
     player.style.width = "20px"
-    player.style.left = "180px"
+    player.style.left = "120px"
   }
   , 400)
 }
@@ -165,5 +166,8 @@ function duck(){
 document.addEventListener("keydown", function(e) {
   if(e.key === "ArrowUp"){
     jump()
+  }
+  if(e.key === "ArrowDown"){
+    duck()
   }
 })
