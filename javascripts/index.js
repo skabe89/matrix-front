@@ -44,7 +44,7 @@ function addButtonFunctionality(){
   button.addEventListener("click", function(e) {
     e.preventDefault()
     //handle info, start game?
-    submitScore()
+    startGame()
   })
 }
 
@@ -226,7 +226,9 @@ let lowBulletMove = function(){
 function checkScore(){
   if(score > Game.all[0].score && theOneUsed === false){
     gifOn();
-    setTimeout(() => gifOff(), 2000)
+    setTimeout(() => gifOff(), 1800)
+    setTimeout(() => codeHallOn(), 1800)
+    setTimeout(() => codeHallOff(), 3000)
     theOneUsed = true
   }
 }
@@ -302,6 +304,7 @@ function addGameEvents(){
 
 //animations
 let theOneGif = document.getElementById("theOne")
+let codeHallGif = document.getElementById("codeHall")
 
 function gifOn(){
   startWindow().style.display = "block"
@@ -311,4 +314,14 @@ function gifOn(){
 function gifOff(){
   startWindow().style.display = "none"
   theOneGif.style.display = "none";
+}
+
+function codeHallOn(){
+  startWindow().style.display = "block"
+  codeHallGif.style.display = "block"
+}
+
+function codeHallOff(){
+  startWindow().style.display = "none"
+  codeHallGif.style.display = "none"
 }

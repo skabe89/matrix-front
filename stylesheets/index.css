@@ -39,6 +39,13 @@
   width: 87%;
 }
 
+#codeHall {
+  display: none;
+  margin-left: auto;
+  margin-right: auto;
+  width: 87%;
+}
+
 #optionsWindow {
   display: inline-block;
   background-color: rgb(202, 200, 200);
