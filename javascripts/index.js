@@ -4,6 +4,7 @@ const optionsArea = document.getElementById("optionsUl")
 const scoreBoard = document.getElementById("scoreBoard")
 let nameInput = () => document.getElementById("name")
 let scoreInput = () => document.getElementById("score")
+let gameWindow = () => document.getElementById("gameWindow")
 
 window.addEventListener('DOMContentLoaded', (event) => {
   fetchScores();
@@ -136,3 +137,33 @@ class Game {
 }
 
 // game mechanics
+
+const player = document.getElementById("player")
+
+// function renderPlayer(){
+//   let player = ` <div id="player" style="bottom: 0px; left: 120px;"></div>`
+//   gameWindow().append(player)
+// }
+
+function jump(){
+  player.style.bottom = "40px"
+  setTimeout(() => player.style.bottom = "0px", 200)
+}
+
+function duck(){
+  player.style.left = "160px"
+  player.style.height = "20px"
+  player.style.width = "40px"
+  setTimeout(() => {
+    player.style.height = "40px"
+    player.style.width = "20px"
+    player.style.left = "180px"
+  }
+  , 400)
+}
+
+document.addEventListener("keydown", function(e) {
+  if(e.key === "ArrowUp"){
+    jump()
+  }
+})
