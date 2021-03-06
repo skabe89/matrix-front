@@ -83,3 +83,8 @@
   position: absolute;
   background-color: rgb(137, 137, 202);
 }
+
+#score {
+  color: white;
+  font-size: 40px;
+}

@@ -141,11 +141,13 @@ class Game {
 const player = document.getElementById("player")
 player.style.height = "80px"
 const bullet = document.getElementById("bullet")
+const scoreDiv = document.getElementById("score")
+let score = 0
 
-// function renderPlayer(){
-//   let player = ` <div id="player" style="bottom: 0px; left: 120px;"></div>`
-//   gameWindow().append(player)
-// }
+function renderGameScore(){
+  scoreDiv.innerText = score
+}
+
 
 function jump(){
   player.style.bottom = "40px"
@@ -174,7 +176,8 @@ let highBulletMove = function(){
   else {
     clearInterval(intervalId)
     bullet.style.left = "685px"
-    // score ++
+    score ++
+    renderGameScore()
   }
 }
 
@@ -194,7 +197,8 @@ let lowBulletMove = function(){
     clearInterval(intervalId)
     bullet.style.left = "685px"
     bullet.style.bottom = "58px"
-    // score ++
+    score ++
+    renderGameScore()
   }
 }
 
@@ -207,12 +211,14 @@ let checkHit = function(){
     console.log(bulletLeft)
     if(height === "80px" && bulletLeft === "140px"){
       alert("Game Over, high hit")
+      score = -1
     }
   }
   else if(bullet.style.bottom !== "58px"){
     //lowshot
     if(bottom === "0px" && bulletLeft === "140px"){
       alert("Game Over, low hit")
+      score = -1
     } 
   }
 }
@@ -230,7 +236,6 @@ let shot = function(){
     , 7);
     //number will be variable to change the speeds 
 }
-
 
 
 document.addEventListener("keydown", function(e) {
