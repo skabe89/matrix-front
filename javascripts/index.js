@@ -45,6 +45,7 @@ function addButtonFunctionality(){
     e.preventDefault()
     //handle info, start game?
     startGame()
+    gunCock.play()
   })
 }
 
@@ -244,7 +245,9 @@ let checkHit = function(){
       alert("Game Over, high hit")
       theOneUsed = false
       submitScore()
-      score = -1
+      clearInterval(intervalId)
+      bullet.style.left = "685px"
+      score = 0
     }
   }
   else if(bullet.style.bottom !== "58px"){
@@ -253,7 +256,10 @@ let checkHit = function(){
       alert("Game Over, low hit")
       theOneUsed = false
       submitScore()
-      score = -1
+      clearInterval(intervalId)
+      bullet.style.left = "685px"
+      bullet.style.bottom = "58px"
+      score = 0
     } 
   }
 }
@@ -263,7 +269,8 @@ let shot = function(){
   let randomNum = Math.floor(Math.random() * 2)
   let shotOptions = [lowBulletMove, highBulletMove]
   let randomShot = Math.floor(Math.random() * 7)
-  console.log(randomNum)
+  gunShot.play()
+  
   this.intervalId = setInterval(function() {
     shotOptions[randomNum]()
     checkHit()
@@ -305,6 +312,9 @@ function addGameEvents(){
 //animations
 let theOneGif = document.getElementById("theOne")
 let codeHallGif = document.getElementById("codeHall")
+let gunCock = new Audio('https://www.soundjay.com/mechanical/sounds/gun-cocking-01.mp3')
+let gunShot = new Audio('https://www.soundjay.com/mechanical/sounds/gun-gunshot-01.mp3')
+let shellDrop = new Audio('https://www.soundjay.com/mechanical/sounds/empty-bullet-shell-fall-02.mp3')
 
 function gifOn(){
   startWindow().style.display = "block"
@@ -324,4 +334,28 @@ function codeHallOn(){
 function codeHallOff(){
   startWindow().style.display = "none"
   codeHallGif.style.display = "none"
+}
+
+let startText = () => document.getElementById("startText")
+let blah = ""
+let namess = "Brad"
+
+function renderStartText(){
+  startText().innerText = string
+}
+
+function typeName(string){
+  for(let i = 0; i < string.length; i++){
+    setTimeout(() => {
+      blah = blah.concat(string[i]);
+      console.log(blah)
+    }, i * 500)
+  }
+}
+
+function delayType(i){
+  setTimeout(() => {
+    blah = blah.concat(namess[i])
+    console.log(blah)
+  }, 1000)
 }

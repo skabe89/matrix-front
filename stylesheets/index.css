@@ -32,6 +32,13 @@
 
 }
 
+#startText{
+  color:rgb(0, 255, 0);
+  position: absolute;
+  top: 40%;
+  left: 38%;
+}
+
 #theOne {
   display: none;
   margin-left: auto;
