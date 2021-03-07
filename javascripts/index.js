@@ -5,6 +5,8 @@ const scoreBoard = document.getElementById("scoreBoard")
 let nameInput = () => document.getElementById("name")
 let scoreInput = () => document.getElementById("score")
 let startWindow = () => document.getElementById("startWindow")
+let userName = ""
+let stringToRender = ""
 
 window.addEventListener('DOMContentLoaded', (event) => {
   fetchScores();
@@ -42,12 +44,28 @@ function renderForm(){
 function addButtonFunctionality(){
   let button = document.getElementById("form").children[2]
   button.addEventListener("click", function(e) {
+
+    userName = nameInput().value
+    let openingLine = `Wake up, ${userName}...`
+    document.querySelector("h3").innerText = userName
+    deleteButton()
     e.preventDefault()
-    //handle info, start game?
-    startGame()
-    gunCock.play()
+    typeName(openingLine)
+    setTimeout(() => {
+      console.log("starting")
+      startGame();
+      gunCock.play()
+    }, 4000)
+
   })
 }
+
+function deleteButton(){
+  let form = document.getElementById("form")
+  form.innerHTML = ""
+}
+
+
 
 function submitScore(e){
   if(score === -1){
@@ -57,7 +75,7 @@ function submitScore(e){
   let params = {
     "score": score,
         "user": {
-          "name": nameInput().value
+          "name": userName
         }
     }
 
@@ -238,9 +256,9 @@ let checkHit = function(){
   let bulletLeft = bullet.style.left
   let bottom = player.style.bottom
   let height = player.style.height
-  console.log(height)
+  // console.log(height)
   if (bullet.style.bottom === "58px"){
-    console.log(bulletLeft)
+    // console.log(bulletLeft)
     if(height === "80px" && bulletLeft === "140px", height === "80px" && bulletLeft === "135px", height === "80px" && bulletLeft === "130px"){
       alert("Game Over, high hit")
       theOneUsed = false
@@ -317,6 +335,7 @@ let gunShot = new Audio('https://www.soundjay.com/mechanical/sounds/gun-gunshot-
 let shellDrop = new Audio('https://www.soundjay.com/mechanical/sounds/empty-bullet-shell-fall-02.mp3')
 
 function gifOn(){
+  startText().innerHTML = ""
   startWindow().style.display = "block"
   theOneGif.style.display = "block"
 }
@@ -337,9 +356,7 @@ function codeHallOff(){
 }
 
 let startText = () => document.getElementById("startText")
-let stringToRender = ""
-let namess = "Neo"
-let openingLine = `Wake up, ${namess}...`
+
 
 
 function renderStartText(){
