@@ -337,25 +337,21 @@ function codeHallOff(){
 }
 
 let startText = () => document.getElementById("startText")
-let blah = ""
-let namess = "Brad"
+let stringToRender = ""
+let namess = "Neo"
+let openingLine = `Wake up, ${namess}...`
+
 
 function renderStartText(){
-  startText().innerText = string
+  startText().innerText = stringToRender
 }
 
 function typeName(string){
   for(let i = 0; i < string.length; i++){
     setTimeout(() => {
-      blah = blah.concat(string[i]);
-      console.log(blah)
-    }, i * 500)
+      stringToRender = stringToRender.concat(string[i]);
+      renderStartText()
+    }, i * 200)
   }
 }
 
-function delayType(i){
-  setTimeout(() => {
-    blah = blah.concat(namess[i])
-    console.log(blah)
-  }, 1000)
-}
