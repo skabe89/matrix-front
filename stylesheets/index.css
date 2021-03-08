@@ -63,7 +63,8 @@ body {
 
 #optionsWindow {
   display: inline-block;
-  background-color: rgb(202, 200, 200);
+  background-color: rgb(231, 229, 229);
+  border: 2px solid rgb(77, 76, 76);
   height: 500px;
   width: 250px;
   text-align: center;
@@ -78,7 +79,8 @@ body {
 
 #scoreWindow {
   display: inline-block;
-  background-color: rgb(202, 200, 200);
+  background-color: rgb(231, 229, 229);
+  border: 2px solid rgb(77, 76, 76);
   height: 500px;
   width: 250px;
   text-align: center;
