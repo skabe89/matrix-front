@@ -55,7 +55,7 @@ function addButtonFunctionality(){
       console.log("starting")
       startGame();
       gunCock.play()
-    }, 4000)
+    }, 6000)
 
   })
 }
@@ -244,6 +244,7 @@ let lowBulletMove = function(){
 
 function checkScore(){
   if(score > Game.all[0].score && theOneUsed === false){
+    renderBackground()
     gifOn();
     setTimeout(() => gifOff(), 1800)
     setTimeout(() => codeHallOn(), 1800)
@@ -262,10 +263,12 @@ let checkHit = function(){
     if(height === "80px" && bulletLeft === "140px", height === "80px" && bulletLeft === "135px", height === "80px" && bulletLeft === "130px"){
       alert("Game Over, high hit")
       theOneUsed = false
+      resetBackground()
       submitScore()
       clearInterval(intervalId)
       bullet.style.left = "685px"
       score = 0
+      renderGameScore()
     }
   }
   else if(bullet.style.bottom !== "58px"){
@@ -273,11 +276,13 @@ let checkHit = function(){
     if(bottom === "0px" && bulletLeft === "140px", bottom === "0px" && bulletLeft === "135px", bottom === "0px" && bulletLeft === "130px"){
       alert("Game Over, low hit")
       theOneUsed = false
-      submitScore()
+      resetBackground()
       clearInterval(intervalId)
+      submitScore()
       bullet.style.left = "685px"
       bullet.style.bottom = "58px"
       score = 0
+      renderGameScore()
     } 
   }
 }
@@ -333,6 +338,7 @@ let codeHallGif = document.getElementById("codeHall")
 let gunCock = new Audio('https://www.soundjay.com/mechanical/sounds/gun-cocking-01.mp3')
 let gunShot = new Audio('https://www.soundjay.com/mechanical/sounds/gun-gunshot-01.mp3')
 let shellDrop = new Audio('https://www.soundjay.com/mechanical/sounds/empty-bullet-shell-fall-02.mp3')
+// let bgroundMusic = new Audio('https://voca.ro/1ojszmorAV4z')
 
 function gifOn(){
   startText().innerHTML = ""
@@ -360,7 +366,8 @@ let startText = () => document.getElementById("startText")
 
 
 function renderStartText(){
-  startText().innerText = stringToRender
+  startText().style.left = "30%"
+  startText().innerText = stringToRender + "_"
 }
 
 function typeName(string){
@@ -368,7 +375,15 @@ function typeName(string){
     setTimeout(() => {
       stringToRender = stringToRender.concat(string[i]);
       renderStartText()
-    }, i * 200)
+    }, i * 270)
   }
+}
+
+function renderBackground(){
+  document.body.style.backgroundImage = `url("https://media1.tenor.com/images/84bb08e499749a5729fde83700d1351e/tenor.gif?itemid=9435293")`
+}
+
+function resetBackground(){
+  document.body.style.backgroundImage = ""
 }
 
