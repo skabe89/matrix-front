@@ -29,13 +29,13 @@ function fetchScores(){
 
 function renderForm(){
   
-  let form = `<h3>Enter Your Name</h3>
+  let form = `<h2>Enter Your Name</h2>
   <form id="form">
     <div class="input-field">
       <input type="text" name="name" id="name"/>
     </div>
     <br>
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Start Game" />
   </form>
   `
   optionsDiv.innerHTML = form
@@ -46,16 +46,23 @@ function addButtonFunctionality(){
   button.addEventListener("click", function(e) {
 
     userName = nameInput().value
-    let openingLine = `Wake up, ${userName}...`
-    document.querySelector("h3").innerText = userName
-    deleteButton()
-    e.preventDefault()
-    typeName(openingLine)
-    setTimeout(() => {
-      console.log("starting")
-      startGame();
-      gunCock.play()
-    }, 6000)
+    
+    if(userName === ""){
+      alert("Please enter a name")
+    }
+    else {
+      changePlayerColorIfEnoch()
+      let openingLine = `Wake up, ${userName}...`
+      document.querySelector("h3").innerText = userName
+      deleteButton()
+      e.preventDefault()
+      typeName(openingLine)
+      setTimeout(() => {
+        console.log("starting")
+        startGame();
+        gunCock.play()
+      }, 6000)
+    }
 
   })
 }
@@ -68,9 +75,6 @@ function deleteButton(){
 
 
 function submitScore(e){
-  if(score === -1){
-    score = 0
-  }
 
   let params = {
     "score": score,
@@ -87,8 +91,7 @@ function submitScore(e){
     body: JSON.stringify(params),
     method: "POST"})
     .then(resp => resp.json())
-    .then(score => { 
-       
+    .then(() => { 
       fetchScores();
     })
   
@@ -99,23 +102,24 @@ function clearScores(){
 }
 
 function renderScores(){
-  Game.all.forEach(game => putScoresOnDom(game))
+  let sortedGames = [...Game.all].sort((a ,b) => b.score - a.score)
+  sortedGames.forEach(game => putScoresOnDom(game))
 }
 
 function putScoresOnDom(score){
   let div = document.createElement("div")
   let li = document.createElement("li")
-  let p = document.createElement("p")
-  let p2 = document.createElement("p")
+  let p = document.createElement("h3")
+  // let p2 = document.createElement("p")
   let btn = document.createElement("button")
 
-  p.innerText = score.user.name
-  p2.innerText = score.score
-  btn.innerText = "Delete-Score"
+  p.innerText = `${score.user.name}: ${score.score} pts`
+  // p2.innerText = score.score
+  btn.innerText = "Delete Score"
   btn.id = score.id
   btn.addEventListener("click", deleteScore)
 
-  li.append(p, p2, btn)
+  li.append(p, btn)
   div.append(li)
   scoreBoard.append(div)
 
@@ -169,18 +173,6 @@ let theOneUsed = false
 renderGameScore()
 let bulletSpeeds = [2, 3, 4, 5, 6, 7, 8]
 
-// function renderGameWindow(){
-//   let window = `<div id="gameWindow">
-//     <div id="score" class="center-align"></div>
-//     <div id="player" style="bottom: 0px; left: 120px;"></div>
-//     <div id="agent" style="bottom: 0px; left: 720px;"></div>
-//     <div id="agentArm" style="bottom: 50px; left: 695px;"></div>
-//     <div id="bullet" style="bottom: 58px; left: 685px;"></div>
-//     <div id="gun" style="bottom: 55px; left: 685px;"></div>
-//     </div>`
-//   body.append(window)
-  
-// }
 
 function renderGameScore(){
   scoreDiv.innerText = score
@@ -295,7 +287,7 @@ let shot = function(){
   gunShot.play()
   
   this.intervalId = setInterval(function() {
-    shotOptions[randomNum]()
+    shotOptions[randomNum]()+
     checkHit()
     //check hit
   }
@@ -385,5 +377,11 @@ function renderBackground(){
 
 function resetBackground(){
   document.body.style.backgroundImage = ""
+}
+
+function changePlayerColorIfEnoch(){
+  if(userName.toLowerCase() === "enoch") {
+    player.style.background = '#283593'
+  }
 }
 
