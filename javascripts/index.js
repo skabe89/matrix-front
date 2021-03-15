@@ -1,34 +1,15 @@
-const baseUrl = "http://localhost:3000"
-const optionsDiv = document.getElementById("optionsWindow")
-const optionsArea = document.getElementById("optionsUl")
-const scoreBoard = document.getElementById("scoreBoard")
-let nameInput = () => document.getElementById("name")
-let scoreInput = () => document.getElementById("score")
-let startWindow = () => document.getElementById("startWindow")
-let userName = ""
-let stringToRender = ""
+
+/** Window displays */
 
 window.addEventListener('DOMContentLoaded', (event) => {
-  fetchScores();
+  Game.fetchScores();
+  Game.renderGameScore();
   renderForm();
   addButtonFunctionality();
+  player.style.height = "80px"
 });
 
-
-function fetchScores(){
-  Game.all = []
-  clearScores()
-  fetch(baseUrl + "/games").then(response => response.json())
-    .then(data => {
-      data.forEach(score => {
-        let game = new Game(score)
-      });
-      renderScores()
-    });
-}
-
-function renderForm(){
-  
+let renderForm = () => {
   let form = `<h2>Enter Your Name</h2>
   <form id="form">
     <div class="input-field">
@@ -41,10 +22,21 @@ function renderForm(){
   optionsDiv.innerHTML = form
 }
 
-function addButtonFunctionality(){
-  let button = document.getElementById("form").children[2]
-  button.addEventListener("click", function(e) {
+let renderControlMenu = () => {
+  let form = `    
+    <h2><u>Controls</u></h2>
+    <h4>Press the UP arrow to Jump</h4>
+    <h4>Press the Down arrow to Duck</h4>
+    <h4>Press the spacebar to have the agent fire a shot</h4>
+    <h4>Get the Highscore to become the ONE!</h4>`
 
+  optionsDiv.innerHTML = form
+}
+
+let addButtonFunctionality = () => {
+  let button = document.getElementById("form").children[2]
+
+  button.addEventListener("click", function(e) {
     userName = nameInput().value
     
     if(userName === ""){
@@ -53,8 +45,8 @@ function addButtonFunctionality(){
     else {
       changePlayerColorIfEnoch()
       let openingLine = `Wake up, ${userName}...`
-      document.querySelector("h3").innerText = userName
-      deleteButton()
+      Game.deleteButton()
+      renderControlMenu()
       e.preventDefault()
       typeName(openingLine)
       setTimeout(() => {
@@ -63,128 +55,19 @@ function addButtonFunctionality(){
         gunCock.play()
       }, 6000)
     }
-
   })
 }
 
-function deleteButton(){
-  let form = document.getElementById("form")
-  form.innerHTML = ""
-}
+
+/**  game mechanics */
 
 
-
-function submitScore(e){
-
-  let params = {
-    "score": score,
-        "user": {
-          "name": userName
-        }
-    }
-
-  fetch(baseUrl + "/games", {
-    headers: {
-      "Accept": "application/json",
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify(params),
-    method: "POST"})
-    .then(resp => resp.json())
-    .then(() => { 
-      fetchScores();
-    })
-  
-}
-
-function clearScores(){
-  scoreBoard.innerHTML = ""
-}
-
-function renderScores(){
-  let sortedGames = [...Game.all].sort((a ,b) => b.score - a.score)
-  sortedGames.forEach(game => putScoresOnDom(game))
-}
-
-function putScoresOnDom(score){
-  let div = document.createElement("div")
-  let li = document.createElement("li")
-  let p = document.createElement("h3")
-  // let p2 = document.createElement("p")
-  let btn = document.createElement("button")
-
-  p.innerText = `${score.user.name}: ${score.score} pts`
-  // p2.innerText = score.score
-  btn.innerText = "Delete Score"
-  btn.id = score.id
-  btn.addEventListener("click", deleteScore)
-
-  li.append(p, btn)
-  div.append(li)
-  scoreBoard.append(div)
-
-}
-
-function deleteScore(e){
-  
-  id = parseInt(e.target.id)
-  
-  fetch(baseUrl + "/games/" + id, {
-    method: "DELETE"
-  })
-  .then(resp => resp.json())
-  .then(function(data){
-    Game.all = Game.all.filter(function(game){
-      return game.id !== data.id
-    })
-    updateScores()
-  })
-  }
-
-
-function updateScores(){
-  clearScores()
-  renderScores()
-}
-
-
-class Game {
-
-  constructor(score){
-    this.id = score.id
-    this.score = score.score
-    this.user = score.user
-    Game.all.push(this)
-  }
-
-  static all = []
-
-}
-
-// game mechanics
-
-const player = document.getElementById("player")
-player.style.height = "80px"
-const bullet = document.getElementById("bullet")
-const scoreDiv = document.getElementById("score")
-
-let score = 0
-let theOneUsed = false
-renderGameScore()
-let bulletSpeeds = [2, 3, 4, 5, 6, 7, 8]
-
-
-function renderGameScore(){
-  scoreDiv.innerText = score
-}
-
-
-function jump(){
+let jump = () =>{
   player.style.bottom = "40px"
   setTimeout(() => player.style.bottom = "0px", 200)
 }
 
-function duck(){
+let duck = () =>{
   player.style.left = "40px"
   player.style.height = "20px"
   player.style.width = "80px"
@@ -196,7 +79,7 @@ function duck(){
   , 300)
 }
 
-let highBulletMove = function(){
+let highBulletMove = () => {
   let shotMove = bullet.style.left.replace("px", "")
   let left = parseInt(shotMove, 10)
 
@@ -208,11 +91,11 @@ let highBulletMove = function(){
     bullet.style.left = "685px"
     score ++
     checkScore()
-    renderGameScore()
+    Game.renderGameScore()
   }
 }
 
-let lowBulletMove = function(){
+let lowBulletMove = () => {
   let shotMove = bullet.style.left.replace("px", "")
   let left = parseInt(shotMove, 10)
   let shotDown = bullet.style.bottom.replace("px", "")
@@ -230,12 +113,13 @@ let lowBulletMove = function(){
     bullet.style.bottom = "58px"
     score ++
     checkScore()
-    renderGameScore()
+    Game.renderGameScore()
   }
 }
 
-function checkScore(){
-  if(score > Game.all[0].score && theOneUsed === false){
+let checkScore = () => {
+  if(score > Game.sortedGames()[0]?.score && theOneUsed === false) {
+    console.log('%cChecking Score', "color: red")
     renderBackground()
     gifOn();
     setTimeout(() => gifOff(), 1800)
@@ -245,42 +129,43 @@ function checkScore(){
   }
 }
 
-let checkHit = function(){
+let checkHit = () => {
   let bulletLeft = bullet.style.left
   let bottom = player.style.bottom
   let height = player.style.height
-  // console.log(height)
-  if (bullet.style.bottom === "58px"){
-    // console.log(bulletLeft)
-    if(height === "80px" && bulletLeft === "140px", height === "80px" && bulletLeft === "135px", height === "80px" && bulletLeft === "130px"){
+  // console.log(bulletLeft)
+  // console.log(bullet.style.bottom)
+  if (bullet.style.bottom === "58px") {
+    // console.log("the height is right")
+    if(height === "80px" && bulletLeft === "140px", height === "80px" && bulletLeft === "135px", height === "80px" && bulletLeft === "130px") {
       alert("Game Over, high hit")
       theOneUsed = false
       resetBackground()
-      submitScore()
+      Game.submitScore()
       clearInterval(intervalId)
       bullet.style.left = "685px"
       score = 0
-      renderGameScore()
+      Game.renderGameScore()
     }
   }
-  else if(bullet.style.bottom !== "58px"){
+  else if(bullet.style.bottom !== "58px") {
     //lowshot
-    if(bottom === "0px" && bulletLeft === "140px", bottom === "0px" && bulletLeft === "135px", bottom === "0px" && bulletLeft === "130px"){
+    if(bottom === "0px" && bulletLeft === "140px", bottom === "0px" && bulletLeft === "135px", bottom === "0px" && bulletLeft === "130px") {
+      // gameOver()
       alert("Game Over, low hit")
       theOneUsed = false
       resetBackground()
       clearInterval(intervalId)
-      submitScore()
+      Game.submitScore()
       bullet.style.left = "685px"
       bullet.style.bottom = "58px"
       score = 0
-      renderGameScore()
+      Game.renderGameScore()
     } 
   }
 }
 //left hits 140, 135, 130, 125, 120, 115
-
-let shot = function(){
+let shot = function() {
   let randomNum = Math.floor(Math.random() * 2)
   let shotOptions = [lowBulletMove, highBulletMove]
   let randomShot = Math.floor(Math.random() * 7)
@@ -289,25 +174,20 @@ let shot = function(){
   this.intervalId = setInterval(function() {
     shotOptions[randomNum]()+
     checkHit()
-    //check hit
   }
   , bulletSpeeds[randomShot]);
-  //variable to change the speeds 
 }
 
-
-function startGame(){
+let startGame = () => {
   startWindow().style.display = "none";
   addGameEvents()
 }
 
+// function gameOver(){
+//   startWindow().style.display = "block"
+// } 
 
-function gameOver(){
-  startWindow().style.display = "block"
-}
-
-
-function addGameEvents(){
+let addGameEvents = () => {
   document.addEventListener("keydown", function(e) {
     if(e.key === "ArrowUp"){
       jump()
@@ -324,45 +204,37 @@ function addGameEvents(){
   })
 }
 
-//animations
-let theOneGif = document.getElementById("theOne")
-let codeHallGif = document.getElementById("codeHall")
-let gunCock = new Audio('https://www.soundjay.com/mechanical/sounds/gun-cocking-01.mp3')
-let gunShot = new Audio('https://www.soundjay.com/mechanical/sounds/gun-gunshot-01.mp3')
-let shellDrop = new Audio('https://www.soundjay.com/mechanical/sounds/empty-bullet-shell-fall-02.mp3')
-// let bgroundMusic = new Audio('https://voca.ro/1ojszmorAV4z')
 
-function gifOn(){
+/** Animations and Sounds */
+
+
+let gifOn = () => {
   startText().innerHTML = ""
   startWindow().style.display = "block"
   theOneGif.style.display = "block"
 }
 
-function gifOff(){
+let gifOff = () => {
   startWindow().style.display = "none"
   theOneGif.style.display = "none";
 }
 
-function codeHallOn(){
+let codeHallOn = () => {
   startWindow().style.display = "block"
   codeHallGif.style.display = "block"
 }
 
-function codeHallOff(){
+let codeHallOff = () => {
   startWindow().style.display = "none"
   codeHallGif.style.display = "none"
 }
 
-let startText = () => document.getElementById("startText")
-
-
-
-function renderStartText(){
+let renderStartText = () => {
   startText().style.left = "30%"
   startText().innerText = stringToRender + "_"
 }
 
-function typeName(string){
+let typeName = (string) => {
   for(let i = 0; i < string.length; i++){
     setTimeout(() => {
       stringToRender = stringToRender.concat(string[i]);
@@ -371,17 +243,16 @@ function typeName(string){
   }
 }
 
-function renderBackground(){
+let renderBackground = () => {
   document.body.style.backgroundImage = `url("https://media1.tenor.com/images/84bb08e499749a5729fde83700d1351e/tenor.gif?itemid=9435293")`
 }
 
-function resetBackground(){
+let resetBackground = () => {
   document.body.style.backgroundImage = ""
 }
 
-function changePlayerColorIfEnoch(){
+let changePlayerColorIfEnoch = () => {
   if(userName.toLowerCase() === "enoch") {
     player.style.background = '#283593'
   }
 }
-
