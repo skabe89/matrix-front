@@ -1,3 +1,7 @@
+# Description
+
+This web application is a JavaScript/CSS based game that integrates Pong and the Matrix. Dodge as many bullets as you can to get the high score!
+
 # matrix-front
 
 backend - https://github.com/skabe89/matrix-back
@@ -21,3 +25,4 @@ While in the back-end directory run the command
 In the front-end, open the file 'index.html' in a web browser
 
 Enter a name and have fun!
+
