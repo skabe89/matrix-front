@@ -1,6 +1,6 @@
 # Description
 
-This web application is a JavaScript/CSS based game that integrates Pong and the Matrix. Dodge as many bullets as you can to get the high score!
+This web application is a JavaScript/CSS based game designed to be a hybrid of Pong and the Matrix. Dodge as many bullets as you can to get the high score!
 
 # matrix-front
 
