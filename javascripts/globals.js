@@ -1,6 +1,6 @@
 
 
-const baseUrl = "http://localhost:3000"
+const baseUrl = "http://localhost:3001"
 const optionsDiv = document.getElementById("optionsWindow")
 const optionsArea = document.getElementById("optionsUl")
 const scoreBoard = document.getElementById("scoreBoard")
@@ -24,5 +24,5 @@ let shellDrop = new Audio('https://www.soundjay.com/mechanical/sounds/empty-bull
 let score = 0
 let theOneUsed = false
 let bulletSpeeds = [2, 3, 4, 5, 6, 7, 8]
-// player.style.height = "80px"
+
 

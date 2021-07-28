@@ -27,7 +27,7 @@ class Game {
   }
 
   static sortedGames(){
-    let sortedGames = [...Game.all].sort((a ,b) => b.score - a.score)
+    let sortedGames = [...Game.all].sort((a, b) => b.score - a.score)
     return sortedGames
   }
 
